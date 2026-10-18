@@ -1,20 +1,44 @@
 import streamlit as st
 
 from bird_identifier import build_description, identify_bird
+from wikipedia_lookup import get_wikipedia_summary
 
 
 def show_photo_placeholder(height):
-    """An empty bordered box where the bird's photo will go (until Step 10)."""
+    """An empty bordered box shown when there is no photo (Step 11 improves this)."""
     with st.container(border=True, height=height):
         st.caption("Photo will appear here.")
 
 
+def show_photo(summary, width, placeholder_height):
+    """Show the Wikipedia photo, or the placeholder box if there is none."""
+    if summary is not None and summary["photo_url"] is not None:
+        st.image(summary["photo_url"], width=width)
+    else:
+        show_photo_placeholder(placeholder_height)
+
+
+def show_names(species):
+    """Common name in bold, with the scientific name in italics right below it."""
+    # Two spaces before "\n" make a Markdown line break, which keeps both
+    # names in one block, close together, instead of two separate blocks.
+    st.markdown("**" + species["common_name"] + "**  \n*" + species["scientific_name"] + "*")
+
+
 def show_confident(result):
-    """One species: names and a large photo."""
+    """One species: names, a photo, and a fun fact from Wikipedia."""
     species = result["species"][0]
-    st.markdown("**" + species["common_name"] + "**")
-    st.markdown("*" + species["scientific_name"] + "*")
-    show_photo_placeholder(200)
+    show_names(species)
+
+    summary = get_wikipedia_summary(species["scientific_name"])
+    show_photo(summary, width=220, placeholder_height=160)
+
+    if summary is not None and summary["fun_fact"] != "":
+        # Wikipedia's own words, shown as written, with a link to the article.
+        st.markdown(summary["fun_fact"])
+        st.caption("[From Wikipedia](" + summary["article_url"] + ")")
+    else:
+        st.caption("No Wikipedia summary available.")
 
 
 def show_possible(result):
@@ -24,9 +48,10 @@ def show_possible(result):
     columns = st.columns(len(result["species"]))
     for column, species in zip(columns, result["species"]):
         with column:
-            st.markdown("**" + species["common_name"] + "**")
-            st.markdown("*" + species["scientific_name"] + "*")
-            show_photo_placeholder(100)
+            show_names(species)
+            summary = get_wikipedia_summary(species["scientific_name"])
+            # "stretch" makes the photo fill the narrow column's width.
+            show_photo(summary, width="stretch", placeholder_height=100)
             if species["distinguishing_trait"] != "":
                 # The tip is written by the AI, so label it clearly.
                 st.caption("AI suggestion: " + species["distinguishing_trait"])
@@ -40,12 +65,18 @@ def show_not_enough():
 # (The Fieldnotes page keeps the normal, narrower reading width.)
 st.set_page_config(layout="wide")
 
+# The site name sits above both columns, centred across the whole page.
+st.title("*Fowl Play*", text_alignment="center")
+
+# The Identify button sits directly below the title, also centred.
+with st.container(horizontal_alignment="center"):
+    # st.button is True only on the run right after the user clicks it.
+    identify_clicked = st.button("Identify", key="identify")
+
 # Split the page: the form on the left, the result frame on the right.
 left, right = st.columns(2, gap="large")
 
 with left:
-    st.title("*Fowl Play*")
-
     main_text = st.text_area(
         "Enter your plain-language description of the bird you saw here, "
         "and let's find out what it is!",
@@ -81,12 +112,8 @@ specifics = {
 }
 
 with right:
-    # A centre-aligned container puts the button and the frame in the middle
-    # of the right half.
+    # A centre-aligned container puts the frame in the middle of the right half.
     with st.container(horizontal_alignment="center"):
-        # st.button is True only on the run right after the user clicks it.
-        identify_clicked = st.button("Identify", key="identify")
-
         # A fixed size keeps the frame visible even before there is
         # a result. If a result is too long, the frame scrolls inside itself.
         result_frame = st.container(border=True, width=560, height=440)

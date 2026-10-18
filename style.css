@@ -1,8 +1,9 @@
 /* Extra styling that Streamlit's settings (config.toml) can't do. */
 
-/* Page links in the top bar: 3pt bigger than the default 12pt. */
-[data-testid="stTopNavLink"] * {
-    font-size: 15pt;
+/* Page links in the top bar, and the "Deploy" button at the top right. */
+[data-testid="stTopNavLink"] *,
+[data-testid="stAppDeployButton"] * {
+    font-size: 12pt;
 }
 
 /* The Identify button (given key="identify"): larger than normal. */

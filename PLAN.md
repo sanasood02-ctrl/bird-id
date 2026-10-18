@@ -71,7 +71,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 ## Phase 4 — Wikipedia photos and fun facts
 
-- [ ] **10. Wikipedia lookup.** Write a function that takes a scientific name
+- [x] **10. Wikipedia lookup.** Write a function that takes a scientific name
   and gets the Wikipedia page summary, which contains both a photo and the
   article's opening text. Show the photo, and the first sentence or two of the
   text as the fun fact, labeled "From Wikipedia" with a link to the article.
