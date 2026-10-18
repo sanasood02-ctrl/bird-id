@@ -1,0 +1,11 @@
+# Virtual environment (Python + libraries for this project; can be rebuilt from requirements.txt)
+.venv/
+
+# Python's auto-generated cache files
+__pycache__/
+
+# macOS Finder metadata files
+.DS_Store
+
+# Secret API key -- must NEVER be committed
+.streamlit/secrets.toml
