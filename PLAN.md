@@ -20,7 +20,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   `streamlit`, `anthropic`, and `requests`, and save them in `requirements.txt`.
   *Test:* `streamlit hello` opens Streamlit's demo page in the browser.
 
-- [ ] **3. Hello page.** A minimal `app.py` that shows the app title.
+- [x] **3. Hello page.** A minimal `app.py` that shows the app title.
   *Test:* `streamlit run app.py` shows the title in the browser.
 
 - [ ] **4. Connect to GitHub.** Create a GitHub repository (private is
