@@ -16,7 +16,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   Make the first commit.
   *Test:* `git status` shows a clean working tree; `git log` shows one commit.
 
-- [ ] **2. Virtual environment and libraries.** Create `.venv`, install
+- [x] **2. Virtual environment and libraries.** Create `.venv`, install
   `streamlit`, `anthropic`, and `requests`, and save them in `requirements.txt`.
   *Test:* `streamlit hello` opens Streamlit's demo page in the browser.
 

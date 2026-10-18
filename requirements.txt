@@ -1,0 +1,5 @@
+# Libraries this project needs. Install them with:
+#   pip install -r requirements.txt
+streamlit==1.66.0   # builds the web app
+anthropic==1.15.0   # talks to Claude Haiku
+requests==2.34.2    # fetches photos and text from Wikipedia
