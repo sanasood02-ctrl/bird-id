@@ -11,7 +11,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 ## Phase 1 — Set up the project
 
-- [ ] **1. Git and .gitignore.** Run `git init`, create `.gitignore` containing
+- [x] **1. Git and .gitignore.** Run `git init`, create `.gitignore` containing
   at least `.venv/`, `__pycache__/`, `.DS_Store`, and `.streamlit/secrets.toml`.
   Make the first commit.
   *Test:* `git status` shows a clean working tree; `git log` shows one commit.
