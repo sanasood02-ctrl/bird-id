@@ -53,7 +53,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 ## Phase 3 — Demo mode and results display
 
-- [ ] **8. Demo identification function.** Write
+- [x] **8. Demo identification function.** Write
   `identify_bird(description)` (in its own file, separate from the UI; it
   receives the combined labeled text from the form) that returns a fake **confident** result: outcome, common name,
   scientific name. (No fun fact here; that comes from Wikipedia in Phase 4.)

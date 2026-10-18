@@ -1,0 +1,26 @@
+# Streamlit settings for the whole app.
+
+[theme]
+# EB Garamond, loaded from Google Fonts (regular, bold and italic).
+font = "'EB Garamond':https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap"
+headingFont = "'EB Garamond':https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap"
+
+# Heading sizes, h1 to h3 (Streamlit defaults: 33pt, 27pt, 21pt):
+#   h1 titles: 12pt smaller = 21pt = 1.75rem
+#   h2: default 2.25rem
+#   h3 subheadings ("Additional specifics"): 2pt smaller = 19pt = 1.583rem
+headingFontSizes = ["1.75rem", "2.25rem", "1.583rem"]
+
+# Small gap between the top page links and the page content,
+# so the whole form fits on screen without scrolling.
+paddingTop = "1rem"
+
+# Colours ("dark" base so borders and notices suit a dark background)
+base = "dark"
+backgroundColor = "#3E2723"            # page background (dark brown)
+textColor = "#F4C9D6"                  # all text (pink)
+primaryColor = "#F4C9D6"               # button highlights and links
+secondaryBackgroundColor = "#2E1C19"   # input boxes (darker brown)
+
+# Square corners on every box, button and frame
+baseRadius = "none"
