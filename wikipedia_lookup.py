@@ -58,3 +58,21 @@ def get_wikipedia_summary(scientific_name):
         "fun_fact": first_sentences(data.get("extract", ""), 2),
         "article_url": data["content_urls"]["desktop"]["page"],
     }
+
+
+def download_photo(photo_url):
+    """Download a photo and return its data (bytes), or None if it fails.
+
+    The app downloads the photo itself, instead of handing the web address to
+    the browser, so it can tell when a photo fails to load and say so.
+    """
+    try:
+        response = requests.get(photo_url, headers=HEADERS, timeout=10)
+    except requests.RequestException:
+        return None
+
+    if response.status_code != 200:
+        return None
+
+    # .content is the raw image data that st.image can display.
+    return response.content

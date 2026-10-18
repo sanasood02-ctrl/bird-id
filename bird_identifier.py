@@ -32,6 +32,8 @@ def identify_bird(description):
     API key. A keyword in the description picks which outcome to show:
       "vague"     -> not_enough
       "lookalike" -> possible
+      "madeup"    -> confident, but for an invented species (to test the
+                     missing-photo fallback and the name check)
       anything else -> confident
     """
     # .lower() makes the keyword check ignore upper/lower case.
@@ -39,6 +41,18 @@ def identify_bird(description):
 
     if "vague" in text:
         return {"outcome": "not_enough", "species": []}
+
+    if "madeup" in text:
+        return {
+            "outcome": "confident",
+            "species": [
+                {
+                    "common_name": "Imaginary Warbler",
+                    "scientific_name": "Fakeus birdus",
+                    "distinguishing_trait": "",
+                }
+            ],
+        }
 
     if "lookalike" in text:
         return {

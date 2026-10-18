@@ -1,21 +1,27 @@
 import streamlit as st
 
 from bird_identifier import build_description, identify_bird
-from wikipedia_lookup import get_wikipedia_summary
+from wikipedia_lookup import download_photo, get_wikipedia_summary
 
 
-def show_photo_placeholder(height):
-    """An empty bordered box shown when there is no photo (Step 11 improves this)."""
+def show_image_not_found(height):
+    """A bordered box saying there is no photo, in the photo's place."""
     with st.container(border=True, height=height):
-        st.caption("Photo will appear here.")
+        st.caption("Image not found")
 
 
 def show_photo(summary, width, placeholder_height):
-    """Show the Wikipedia photo, or the placeholder box if there is none."""
-    if summary is not None and summary["photo_url"] is not None:
-        st.image(summary["photo_url"], width=width)
+    """Show the Wikipedia photo, or "Image not found" if there is no photo
+    or it fails to download."""
+    if summary is None or summary["photo_url"] is None:
+        show_image_not_found(placeholder_height)
+        return
+
+    photo = download_photo(summary["photo_url"])
+    if photo is None:
+        show_image_not_found(placeholder_height)
     else:
-        show_photo_placeholder(placeholder_height)
+        st.image(photo, width=width)
 
 
 def show_names(species):

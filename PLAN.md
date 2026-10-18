@@ -79,7 +79,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   *Test:* the demo species shows a real photo and text that matches the start
   of its Wikipedia article; try 3–4 scientific names you know.
 
-- [ ] **11. Missing-photo fallback.** If no photo is found or it fails to load,
+- [x] **11. Missing-photo fallback.** If no photo is found or it fails to load,
   show "Image not found" in its place. The rest of the result still shows.
   *Test:* put a made-up scientific name in the demo data; "Image not found"
   appears and nothing crashes.
