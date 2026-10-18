@@ -23,7 +23,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 - [x] **3. Hello page.** A minimal `app.py` that shows the app title.
   *Test:* `streamlit run app.py` shows the title in the browser.
 
-- [ ] **4. Connect to GitHub.** Create a GitHub repository (private is
+- [x] **4. Connect to GitHub.** Create a GitHub repository (private is
   recommended until the project is graded) and push.
   *Test:* the files appear on GitHub, and `secrets.toml` is **not** among them.
 
