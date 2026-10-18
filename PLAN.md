@@ -29,7 +29,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 ## Phase 2 — Pages and layout (no AI yet)
 
-- [ ] **5. Two pages.** Add navigation between an "Identify a bird" page and a
+- [x] **5. Two pages.** Add navigation between an "Identify a bird" page and a
   "Fieldnotes tutorial" page (placeholder text for now).
   *Test:* you can click between both pages in the sidebar.
 
