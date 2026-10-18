@@ -93,7 +93,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 ## Phase 5 — Real AI (needs the API key)
 
-- [ ] **13. Secrets file and mode switch.** Create `.streamlit/secrets.toml`
+- [x] **13. Secrets file and mode switch.** Create `.streamlit/secrets.toml`
   with your key. The app uses real mode when a key is present, demo mode when
   not. Set a monthly spending limit in the Anthropic Console.
   *Test:* `git status` does **not** list `secrets.toml`; the demo notice
