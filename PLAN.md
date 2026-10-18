@@ -84,7 +84,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   *Test:* put a made-up scientific name in the demo data; "Image not found"
   appears and nothing crashes.
 
-- [ ] **12. Name check.** Download an official bird checklist (a free CSV file
+- [x] **12. Name check.** Download an official bird checklist (a free CSV file
   of all bird species with common and scientific names; we'll choose which
   one together at this step) and write a function that checks whether a
   scientific name is on it. Species not on the list are not shown as real

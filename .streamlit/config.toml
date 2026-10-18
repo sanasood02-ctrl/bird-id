@@ -30,5 +30,9 @@ blueBackgroundColor = "#F4C9D633"
 yellowTextColor = "#F4C9D6"
 yellowBackgroundColor = "#F4C9D633"
 
+# :gray[...] text in Markdown: the pink at 60% opacity (99 = 60%), matching
+# the faded look of captions. Used for the "Verified on AviList" note.
+grayTextColor = "#F4C9D699"
+
 # Square corners on every box, button and frame
 baseRadius = "none"

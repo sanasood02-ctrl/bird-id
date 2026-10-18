@@ -1,6 +1,7 @@
 import streamlit as st
 
 from bird_identifier import build_description, identify_bird
+from name_check import is_known_species
 from wikipedia_lookup import download_photo, get_wikipedia_summary
 
 
@@ -24,17 +25,36 @@ def show_photo(summary, width, placeholder_height):
         st.image(photo, width=width)
 
 
-def show_names(species):
-    """Common name in bold, with the scientific name in italics right below it."""
-    # Two spaces before "\n" make a Markdown line break, which keeps both
-    # names in one block, close together, instead of two separate blocks.
-    st.markdown("**" + species["common_name"] + "**  \n*" + species["scientific_name"] + "*")
+def show_names(species, note=""):
+    """Common name in bold, with the scientific name in italics right below it,
+    and an optional small note (like "Verified on AviList") right below that."""
+    # Two spaces before "\n" make a Markdown line break, which keeps the
+    # lines in one block, close together, instead of separate blocks.
+    text = "**" + species["common_name"] + "**  \n*" + species["scientific_name"] + "*"
+    if note != "":
+        # :small[...] makes the note smaller and :gray[...] fades it, to match
+        # the caption style of the "From Wikipedia" line.
+        text = text + "  \n:small[:gray[" + note + "]]"
+    st.markdown(text)
+
+
+def show_unverified():
+    """Shown instead of a photo for a name that is not on the official checklist."""
+    st.caption("Could not verify this species name")
 
 
 def show_confident(result):
     """One species: names, a photo, and a fun fact from Wikipedia."""
     species = result["species"][0]
-    show_names(species)
+
+    # A name that is not on the checklist is not shown as a real identification.
+    if not is_known_species(species["scientific_name"]):
+        show_names(species)
+        show_unverified()
+        return
+
+    # Tell the user the name was checked, and against which list.
+    show_names(species, "Verified on the [AviList v2025b](https://www.avilist.org/checklist/v2025b/) global bird species list")
 
     summary = get_wikipedia_summary(species["scientific_name"])
     show_photo(summary, width=220, placeholder_height=160)
@@ -54,7 +74,13 @@ def show_possible(result):
     columns = st.columns(len(result["species"]))
     for column, species in zip(columns, result["species"]):
         with column:
-            show_names(species)
+            if not is_known_species(species["scientific_name"]):
+                show_names(species)
+                show_unverified()
+                # "continue" skips the rest of this species and moves on to the next one.
+                continue
+            # A short version of the "verified" note, to fit the narrow column.
+            show_names(species, "Verified on [AviList](https://www.avilist.org/checklist/v2025b/)")
             summary = get_wikipedia_summary(species["scientific_name"])
             # "stretch" makes the photo fill the narrow column's width.
             show_photo(summary, width="stretch", placeholder_height=100)
