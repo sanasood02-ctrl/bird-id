@@ -5,15 +5,17 @@
 A Streamlit web app (college course term project) that identifies birds from a
 plain-language description.
 
-- The user types what they noticed about a bird in one large box ("Enter your
+- The user types what they noticed about a bird in one main box ("Enter your
   plain-language description of the bird you saw here, and let's find out what
-  it is!"). Below it, under "Additional specifics", are six optional one-line
-  boxes from standard birdwatching field-notes practice: size and shape, wing
-  type, colour patterns, beak type, foot type, behaviours and location.
-- At least one box must be filled in. The app joins every filled-in box into
-  one labeled text (e.g. "Description: ...", "Beak type: ...") and passes that
-  single text to the identification function. Location and season (in the
-  "Behaviours and location" box) narrow down the likely species.
+  it is!"). Under it is a **required** "Location" box (place, and ideally
+  season), because location and season narrow down the likely species. Below
+  that, under "Additional specifics", are six optional one-line boxes from
+  standard birdwatching field-notes practice: size and shape, wing type, colour
+  patterns, beak type, foot type, behaviours.
+- The location plus at least one describing box must be filled in. The app
+  joins every filled-in box into one labeled text (e.g. "Description: ...",
+  "Location: ...", "Beak type: ...") and passes that single text to the
+  identification function.
 - The app asks Claude Haiku 4.5 to identify the species and returns one of
   three outcomes:
   - **Confident** — one species: common name, scientific name, Wikipedia photo, fun fact.
@@ -22,9 +24,11 @@ plain-language description.
     trait that would tell them apart.
   - **Not enough data** — show "Not enough data to make an identification".
     Never guess.
-- Haiku returns only: the outcome type, and for each species its common name,
-  scientific name, and (for possible matches) the distinguishing trait. Haiku
-  does **not** write fun facts.
+- Haiku returns only: a short reasoning (written first: which look-alikes the
+  description rules out; not shown on the page, saved by the evaluation
+  script), the outcome type, and for each species its common name, scientific
+  name, and (for possible matches) the distinguishing trait. Haiku does
+  **not** write fun facts.
 - Photos and fun facts both come from Wikipedia's API (one page-summary
   request), looked up by **scientific name**. The fun fact is the opening of
   the Wikipedia summary, shown as written and labeled "From Wikipedia" with a

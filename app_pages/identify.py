@@ -1,20 +1,19 @@
 import streamlit as st
 
-from bird_identifier import build_description, identify_bird
-from name_check import is_known_species
+from bird_identifier import build_description, has_description, identify_bird
+from name_check import check_species
 from wikipedia_lookup import download_photo, get_wikipedia_summary
 
 
-def has_api_key():
-    """Return True if an Anthropic API key is in .streamlit/secrets.toml.
-
-    Only checks that the key exists; never reads out, prints or shows it.
+def get_api_key():
+    """Return the Anthropic API key from .streamlit/secrets.toml, or None if
+    there isn't one. The key is only passed on to Haiku; never print or show it.
     """
     try:
-        return "ANTHROPIC_API_KEY" in st.secrets
+        return st.secrets.get("ANTHROPIC_API_KEY")
     except FileNotFoundError:
         # There is no secrets.toml file at all, so there is no key.
-        return False
+        return None
 
 
 def show_image_not_found(height):
@@ -55,20 +54,47 @@ def show_unverified():
     st.caption("Could not verify this species name")
 
 
+AVILIST_LINK = "[AviList v2025b](https://www.avilist.org/checklist/v2025b/)"
+AVILIST_SHORT_LINK = "[AviList](https://www.avilist.org/checklist/v2025b/)"
+
+
+def show_checked_names(species, short):
+    """Check the species against AviList, then show its names with a note
+    saying what the check found. short=True uses shorter notes for narrow columns.
+
+    Returns the scientific name to use from here on, or None if the name could
+    not be verified (so no photo or fun fact should be shown).
+    """
+    status, scientific_name = check_species(species)
+
+    if status == "unverified":
+        show_names(species)
+        show_unverified()
+        return None
+
+    # Show the checklist's scientific name (it may have been corrected).
+    checked = {"common_name": species["common_name"], "scientific_name": scientific_name}
+    if status == "verified" and short:
+        show_names(checked, "Verified on " + AVILIST_SHORT_LINK)
+    elif status == "verified":
+        show_names(checked, "Verified on the " + AVILIST_LINK + " global bird species list")
+    elif short:
+        show_names(checked, "Name corrected using " + AVILIST_SHORT_LINK)
+    else:
+        show_names(checked, "Scientific name corrected using the " + AVILIST_LINK + " global bird species list")
+    return scientific_name
+
+
 def show_confident(result):
     """One species: names, a photo, and a fun fact from Wikipedia."""
     species = result["species"][0]
 
     # A name that is not on the checklist is not shown as a real identification.
-    if not is_known_species(species["scientific_name"]):
-        show_names(species)
-        show_unverified()
+    scientific_name = show_checked_names(species, short=False)
+    if scientific_name is None:
         return
 
-    # Tell the user the name was checked, and against which list.
-    show_names(species, "Verified on the [AviList v2025b](https://www.avilist.org/checklist/v2025b/) global bird species list")
-
-    summary = get_wikipedia_summary(species["scientific_name"])
+    summary = get_wikipedia_summary(scientific_name)
     show_photo(summary, width=220, placeholder_height=160)
 
     if summary is not None and summary["fun_fact"] != "":
@@ -86,14 +112,11 @@ def show_possible(result):
     columns = st.columns(len(result["species"]))
     for column, species in zip(columns, result["species"]):
         with column:
-            if not is_known_species(species["scientific_name"]):
-                show_names(species)
-                show_unverified()
+            scientific_name = show_checked_names(species, short=True)
+            if scientific_name is None:
                 # "continue" skips the rest of this species and moves on to the next one.
                 continue
-            # A short version of the "verified" note, to fit the narrow column.
-            show_names(species, "Verified on [AviList](https://www.avilist.org/checklist/v2025b/)")
-            summary = get_wikipedia_summary(species["scientific_name"])
+            summary = get_wikipedia_summary(scientific_name)
             # "stretch" makes the photo fill the narrow column's width.
             show_photo(summary, width="stretch", placeholder_height=100)
             if species["distinguishing_trait"] != "":
@@ -124,7 +147,13 @@ with left:
     main_text = st.text_area(
         "Enter your plain-language description of the bird you saw here, "
         "and let's find out what it is!",
-        height=120,
+        height=80,
+    )
+
+    # Location is required: it is one of the strongest clues to a bird's identity.
+    location = st.text_input(
+        "Location (required)",
+        placeholder="e.g. Lodhi Garden, Delhi, winter morning",
     )
 
     st.subheader("Additional specifics")
@@ -140,9 +169,9 @@ with left:
         with specifics_right:
             beak_type = st.text_input("Beak type", placeholder="e.g. short and conical, hooked")
             foot_type = st.text_input("Foot type", placeholder="e.g. webbed, strong talons")
-            behaviours_and_location = st.text_input(
-                "Behaviours and location",
-                placeholder="e.g. hopping on the ground, Delhi park, winter morning",
+            behaviours = st.text_input(
+                "Behaviours",
+                placeholder="e.g. hopping on the ground, tail-bobbing, sharp chip-chip call",
             )
 
 # A dictionary pairs each label with what the user typed in that box.
@@ -152,7 +181,7 @@ specifics = {
     "Colour patterns": colour_patterns,
     "Beak type": beak_type,
     "Foot type": foot_type,
-    "Behaviours and location": behaviours_and_location,
+    "Behaviours": behaviours,
 }
 
 with right:
@@ -166,15 +195,17 @@ with right:
         if not identify_clicked:
             st.caption("Your result will appear here.")
         else:
-            full_description = build_description(main_text, specifics)
-            if full_description == "":
+            if not has_description(main_text, specifics):
                 st.warning("Please describe the bird to identify it!")
+            elif location.strip() == "":
+                st.warning("Please add where you saw the bird!")
             else:
-                result = identify_bird(full_description)
+                full_description = build_description(main_text, location, specifics)
+                api_key = get_api_key()
+                # With a key, Haiku identifies the bird; without one, demo mode.
+                result = identify_bird(full_description, api_key)
 
-                # Without a key, the app runs in demo mode, so say so.
-                # (Until Step 14, results are still demo results either way.)
-                if not has_api_key():
+                if api_key is None:
                     st.info("Demo mode: showing a sample result, not a real identification.")
 
                 # Pick the layout that matches the outcome.

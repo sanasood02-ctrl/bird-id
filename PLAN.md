@@ -40,16 +40,19 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   *Test:* the page matches your notes word for word, with headings and lists
   showing correctly.
 
-- [x] **7. Description form.** On the Identify page: one large text box
+- [x] **7. Description form.** On the Identify page: a main text box
   ("Enter your plain-language description of the bird you saw here, and let's
-  find out what it is!"), then an "Additional specifics" heading with six
-  optional one-line boxes (size and shape, wing type, colour patterns, beak
-  type, foot type, behaviours and location), and an "Identify" button. The app
-  joins every filled-in box into one labeled text. Show a friendly message only
-  if every box is empty.
-  *Test:* clicking with all boxes empty shows the message; filling only the
-  big box, only one specifics box, or several boxes echoes back the combined
-  labeled text.
+  find out what it is!"), a required "Location" box under it, then an
+  "Additional specifics" heading with six optional one-line boxes (size and
+  shape, wing type, colour patterns, beak type, foot type, behaviours), and an
+  "Identify" button. The app joins every filled-in box into one labeled text.
+  Show a friendly message if nothing describes the bird, or if the location is
+  empty. (Location was made required after testing showed wrong results
+  without it.)
+  *Test:* no description shows "Please describe the bird to identify it!";
+  a description with no location shows "Please add where you saw the bird!";
+  a description (main box or any specifics box) plus a location gives a
+  result.
 
 ## Phase 3 — Demo mode and results display
 
@@ -99,14 +102,13 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   *Test:* `git status` does **not** list `secrets.toml`; the demo notice
   disappears when the key is present and comes back if you rename the file.
 
-- [ ] **14. Real identification.** Replace the fake result with a call to Claude
+- [x] **14. Real identification.** Replace the fake result with a call to Claude
   Haiku 4.5 that returns structured data in the same shape as the demo
   result. Its instructions include the "enough information" rule from
   `CLAUDE.md` and tell it to prefer the cautious outcome when unsure.
   *Test:* try a clear description of a common bird (confident), a look-alike
   pair (possible matches), and "it was a brown bird" (not enough data). Then
-  try the same description with and without the "Behaviours and location"
-  box filled in and compare.
+  try the same description with different locations and compare.
 
 - [ ] **15. Error handling.** Friendly messages for: no internet, API errors
   (e.g. bad key, no credit), and unexpected responses.
@@ -116,8 +118,8 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 ## Phase 6 — Evaluation
 
 - [ ] **16. Test cases CSV.** Write `eval/test_cases.csv` with columns
-  `description`, `behaviours_and_location` (can be blank; joined into the
-  description the same way the form does it), `expected_outcome`
+  `description`, `location` (required), `behaviours` (can be blank; both
+  joined into the description the same way the form does it), `expected_outcome`
   (confident / possible / not_enough), and `expected_species` (scientific
   name; for look-alikes, the species it really was). You decide the expected
   outcome for each row, using your birding knowledge. Include:
