@@ -62,7 +62,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   *Test:* typing anything and clicking Identify shows the fake species and the
   demo notice.
 
-- [ ] **9. All three outcomes in demo mode.** Make the demo function able to
+- [x] **9. All three outcomes in demo mode.** Make the demo function able to
   return each outcome (for example, chosen by a keyword in the description,
   like "vague" or "lookalike"), and build the display for each:
   confident / possible matches (up to 3, with the "how to tell them apart"

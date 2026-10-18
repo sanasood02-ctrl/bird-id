@@ -22,5 +22,13 @@ textColor = "#F4C9D6"                  # all text (pink)
 primaryColor = "#F4C9D6"               # button highlights and links
 secondaryBackgroundColor = "#2E1C19"   # input boxes (darker brown)
 
+# Notices: the demo notice (st.info, normally blue) and warnings
+# (st.warning, normally yellow) both use the pink text colour, on a
+# pink tint (the last two digits, 33, mean 20% opacity).
+blueTextColor = "#F4C9D6"
+blueBackgroundColor = "#F4C9D633"
+yellowTextColor = "#F4C9D6"
+yellowBackgroundColor = "#F4C9D633"
+
 # Square corners on every box, button and frame
 baseRadius = "none"

@@ -28,9 +28,40 @@ def identify_bird(description):
                  scientific_name, and distinguishing_trait (only used for
                  possible matches; empty otherwise).
 
-    Demo version: ignores the description and always returns the same fake
-    confident result, so the app can be built without an API key.
+    Demo version: returns a fake result so the app can be built without an
+    API key. A keyword in the description picks which outcome to show:
+      "vague"     -> not_enough
+      "lookalike" -> possible
+      anything else -> confident
     """
+    # .lower() makes the keyword check ignore upper/lower case.
+    text = description.lower()
+
+    if "vague" in text:
+        return {"outcome": "not_enough", "species": []}
+
+    if "lookalike" in text:
+        return {
+            "outcome": "possible",
+            "species": [
+                {
+                    "common_name": "House Sparrow",
+                    "scientific_name": "Passer domesticus",
+                    "distinguishing_trait": "Grey crown; male has a large black bib",
+                },
+                {
+                    "common_name": "Eurasian Tree Sparrow",
+                    "scientific_name": "Passer montanus",
+                    "distinguishing_trait": "Chestnut crown and a black spot on a white cheek",
+                },
+                {
+                    "common_name": "Spanish Sparrow",
+                    "scientific_name": "Passer hispaniolensis",
+                    "distinguishing_trait": "Heavy black streaks on the chest and sides",
+                },
+            ],
+        }
+
     return {
         "outcome": "confident",
         "species": [
