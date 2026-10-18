@@ -33,7 +33,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   "Fieldnotes tutorial" page (placeholder text for now).
   *Test:* you can click between both pages in the sidebar.
 
-- [ ] **6. Fieldnotes tutorial content.** Add your class notes as
+- [x] **6. Fieldnotes tutorial content.** Add your class notes as
   `fieldnotes.md` in the project folder. The page reads the file and displays
   it exactly as written (Markdown formatting like headings and lists is shown
   as formatted text; no AI involved).
