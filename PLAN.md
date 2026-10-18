@@ -40,19 +40,22 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   *Test:* the page matches your notes word for word, with headings and lists
   showing correctly.
 
-- [ ] **7. Description form.** On the Identify page: a text box, a short list of
-  suggested traits to describe (size, wing shape, color pattern, beak type,
-  foot type, other), an optional "Where and when did you see it?" field, and
-  an "Identify" button. Show a friendly message if the description box is
-  empty (the location field can stay empty).
-  *Test:* clicking with an empty box shows the message; with text, the app
-  echoes back the description and the location (if given).
+- [x] **7. Description form.** On the Identify page: one large text box
+  ("Enter your plain-language description of the bird you saw here, and let's
+  find out what it is!"), then an "Additional specifics" heading with six
+  optional one-line boxes (size and shape, wing type, colour patterns, beak
+  type, foot type, behaviours and location), and an "Identify" button. The app
+  joins every filled-in box into one labeled text. Show a friendly message only
+  if every box is empty.
+  *Test:* clicking with all boxes empty shows the message; filling only the
+  big box, only one specifics box, or several boxes echoes back the combined
+  labeled text.
 
 ## Phase 3 — Demo mode and results display
 
 - [ ] **8. Demo identification function.** Write
-  `identify_bird(description, location)` (in its own file, separate from the
-  UI) that returns a fake **confident** result: outcome, common name,
+  `identify_bird(description)` (in its own file, separate from the UI; it
+  receives the combined labeled text from the form) that returns a fake **confident** result: outcome, common name,
   scientific name. (No fun fact here; that comes from Wikipedia in Phase 4.)
   Show a
   "Demo mode" notice on the page.
@@ -102,7 +105,8 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   `CLAUDE.md` and tell it to prefer the cautious outcome when unsure.
   *Test:* try a clear description of a common bird (confident), a look-alike
   pair (possible matches), and "it was a brown bird" (not enough data). Then
-  try the same description with and without a location and compare.
+  try the same description with and without the "Behaviours and location"
+  box filled in and compare.
 
 - [ ] **15. Error handling.** Friendly messages for: no internet, API errors
   (e.g. bad key, no credit), and unexpected responses.
@@ -112,7 +116,8 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 ## Phase 6 — Evaluation
 
 - [ ] **16. Test cases CSV.** Write `eval/test_cases.csv` with columns
-  `description`, `location` (can be blank), `expected_outcome`
+  `description`, `behaviours_and_location` (can be blank; joined into the
+  description the same way the form does it), `expected_outcome`
   (confident / possible / not_enough), and `expected_species` (scientific
   name; for look-alikes, the species it really was). You decide the expected
   outcome for each row, using your birding knowledge. Include:

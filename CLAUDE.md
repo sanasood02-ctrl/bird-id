@@ -5,11 +5,15 @@
 A Streamlit web app (college course term project) that identifies birds from a
 plain-language description.
 
-- The user types what they noticed about a bird. Suggested traits (none required),
-  from standard birdwatching field-notes practice: size, wing shape, color
-  pattern, beak type, foot type, other characteristics.
-- There is also an optional "Where and when did you see it?" field. Location
-  and season are passed to Haiku because they narrow down the likely species.
+- The user types what they noticed about a bird in one large box ("Enter your
+  plain-language description of the bird you saw here, and let's find out what
+  it is!"). Below it, under "Additional specifics", are six optional one-line
+  boxes from standard birdwatching field-notes practice: size and shape, wing
+  type, colour patterns, beak type, foot type, behaviours and location.
+- At least one box must be filled in. The app joins every filled-in box into
+  one labeled text (e.g. "Description: ...", "Beak type: ...") and passes that
+  single text to the identification function. Location and season (in the
+  "Behaviours and location" box) narrow down the likely species.
 - The app asks Claude Haiku 4.5 to identify the species and returns one of
   three outcomes:
   - **Confident** — one species: common name, scientific name, Wikipedia photo, fun fact.
