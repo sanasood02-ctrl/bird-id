@@ -5,6 +5,18 @@ from name_check import is_known_species
 from wikipedia_lookup import download_photo, get_wikipedia_summary
 
 
+def has_api_key():
+    """Return True if an Anthropic API key is in .streamlit/secrets.toml.
+
+    Only checks that the key exists; never reads out, prints or shows it.
+    """
+    try:
+        return "ANTHROPIC_API_KEY" in st.secrets
+    except FileNotFoundError:
+        # There is no secrets.toml file at all, so there is no key.
+        return False
+
+
 def show_image_not_found(height):
     """A bordered box saying there is no photo, in the photo's place."""
     with st.container(border=True, height=height):
@@ -160,9 +172,10 @@ with right:
             else:
                 result = identify_bird(full_description)
 
-                # There is no API key yet, so every result is a demo result.
-                # (Step 13 will show this only when no key is found.)
-                st.info("Demo mode: showing a sample result, not a real identification.")
+                # Without a key, the app runs in demo mode, so say so.
+                # (Until Step 14, results are still demo results either way.)
+                if not has_api_key():
+                    st.info("Demo mode: showing a sample result, not a real identification.")
 
                 # Pick the layout that matches the outcome.
                 if result["outcome"] == "confident":

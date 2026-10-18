@@ -9,3 +9,5 @@ __pycache__/
 
 # Secret API key -- must NEVER be committed
 .streamlit/secrets.toml
+# ...and renamed copies, like secrets.toml.off (the * matches anything after)
+.streamlit/secrets.toml*
