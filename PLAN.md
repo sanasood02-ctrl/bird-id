@@ -110,7 +110,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   pair (possible matches), and "it was a brown bird" (not enough data). Then
   try the same description with different locations and compare.
 
-- [ ] **15. Error handling.** Friendly messages for: no internet, API errors
+- [x] **15. Error handling.** Friendly messages for: no internet, API errors
   (e.g. bad key, no credit), and unexpected responses.
   *Test:* temporarily break the key in `secrets.toml` and turn Wi-Fi off; the
   app shows a message instead of crashing. Restore the key afterwards.

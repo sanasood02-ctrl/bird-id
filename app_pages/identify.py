@@ -1,6 +1,6 @@
 import streamlit as st
 
-from bird_identifier import build_description, has_description, identify_bird
+from bird_identifier import IdentificationError, build_description, has_description, identify_bird
 from name_check import check_species
 from wikipedia_lookup import download_photo, get_wikipedia_summary
 
@@ -202,16 +202,23 @@ with right:
             else:
                 full_description = build_description(main_text, location, specifics)
                 api_key = get_api_key()
-                # With a key, Haiku identifies the bird; without one, demo mode.
-                result = identify_bird(full_description, api_key)
-
-                if api_key is None:
-                    st.info("Demo mode: showing a sample result, not a real identification.")
-
-                # Pick the layout that matches the outcome.
-                if result["outcome"] == "confident":
-                    show_confident(result)
-                elif result["outcome"] == "possible":
-                    show_possible(result)
+                try:
+                    # The spinner shows while Haiku works, then disappears.
+                    with st.spinner("Identifying…"):
+                        # With a key, Haiku identifies the bird; without one, demo mode.
+                        result = identify_bird(full_description, api_key)
+                except IdentificationError as error:
+                    # Show the friendly message instead of a crash.
+                    st.error(str(error))
                 else:
-                    show_not_enough()
+                    # "else" runs only if there was no error above.
+                    if api_key is None:
+                        st.info("Demo mode: showing a sample result, not a real identification.")
+
+                    # Pick the layout that matches the outcome.
+                    if result["outcome"] == "confident":
+                        show_confident(result)
+                    elif result["outcome"] == "possible":
+                        show_possible(result)
+                    else:
+                        show_not_enough()

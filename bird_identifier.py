@@ -105,32 +105,76 @@ def identify_bird(description, api_key=None):
                  possible matches; empty otherwise).
 
     With an API key, asks Claude Haiku. Without one, returns a demo result.
+    Raises IdentificationError (with a friendly message) if Haiku can't be asked.
     """
     if api_key is None:
         return demo_identify(description)
     return ask_haiku(description, api_key)
 
 
-def ask_haiku(description, api_key):
-    """Ask Claude Haiku to identify the bird, and return its answer as a dictionary."""
-    client = anthropic.Anthropic(api_key=api_key)
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=2048,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": description}],
-        # Structured outputs: the reply must be JSON matching RESULT_SCHEMA.
-        output_config={"format": {"type": "json_schema", "schema": RESULT_SCHEMA}},
-        # temperature 0 = the same description gets the same answer every time,
-        # which keeps the evaluation fair. (This SDK version no longer lists
-        # temperature as a setting, so it is passed through extra_body.)
-        extra_body={"temperature": 0},
-    )
+class IdentificationError(Exception):
+    """Raised when the bird could not be identified because something went
+    wrong (no internet, bad key, unreadable answer...). Its message is a
+    friendly sentence that can be shown to the user as it is."""
 
-    # The JSON answer is in the reply's text block. json.loads turns it into
-    # a Python dictionary.
-    text = next(block.text for block in response.content if block.type == "text")
-    result = json.loads(text)
+
+def ask_haiku(description, api_key):
+    """Ask Claude Haiku to identify the bird, and return its answer as a dictionary.
+
+    Raises IdentificationError with a friendly message if anything goes wrong.
+    """
+    client = anthropic.Anthropic(api_key=api_key)
+    try:
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=2048,
+            system=SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": description}],
+            # Structured outputs: the reply must be JSON matching RESULT_SCHEMA.
+            output_config={"format": {"type": "json_schema", "schema": RESULT_SCHEMA}},
+            # temperature 0 = the same description gets the same answer every time,
+            # which keeps the evaluation fair. (This SDK version no longer lists
+            # temperature as a setting, so it is passed through extra_body.)
+            extra_body={"temperature": 0},
+        )
+    # Each "except" catches one kind of failure and swaps the technical error
+    # for a friendly message. The first matching one is used.
+    except anthropic.APIConnectionError:
+        # No internet, or Anthropic did not answer in time.
+        raise IdentificationError(
+            "Couldn't reach the identification service. "
+            "Check your internet connection and try again."
+        )
+    except anthropic.AuthenticationError:
+        raise IdentificationError("The app's API key isn't working. Please check the key in secrets.toml.")
+    except anthropic.BadRequestError as error:
+        # An empty account is reported as a "bad request" that mentions credit.
+        if "credit" in str(error).lower():
+            raise IdentificationError("The identification service is out of credit right now.")
+        raise IdentificationError("Something went wrong asking for an identification. Please try again.")
+    except (anthropic.RateLimitError, anthropic.OverloadedError,
+            anthropic.InternalServerError, anthropic.ServiceUnavailableError):
+        raise IdentificationError("The identification service is busy. Please try again in a moment.")
+    except anthropic.APIError:
+        # Any other problem on Anthropic's side.
+        raise IdentificationError("Something went wrong asking for an identification. Please try again.")
+
+    # "end_turn" means Haiku finished normally. Anything else (e.g. it ran out
+    # of room with "max_tokens") means the answer may be cut off.
+    if response.stop_reason != "end_turn":
+        raise IdentificationError("Something went wrong reading the result. Please try again.")
+
+    # The JSON answer is in the reply's text block (None if there isn't one).
+    text = next((block.text for block in response.content if block.type == "text"), None)
+    if text is None:
+        raise IdentificationError("Something went wrong reading the result. Please try again.")
+
+    # json.loads turns the JSON text into a Python dictionary. It fails with
+    # a JSONDecodeError if the text is not valid JSON.
+    try:
+        result = json.loads(text)
+    except json.JSONDecodeError:
+        raise IdentificationError("Something went wrong reading the result. Please try again.")
 
     # The schema can't limit the list to 3 species, so do it here.
     result["species"] = result["species"][:3]
