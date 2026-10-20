@@ -11,3 +11,6 @@ __pycache__/
 .streamlit/secrets.toml
 # ...and renamed copies, like secrets.toml.off (the * matches anything after)
 .streamlit/secrets.toml*
+
+# Practice runs of the evaluation script with fake demo answers
+eval/results_demo_*.csv

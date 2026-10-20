@@ -118,10 +118,13 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 ## Phase 6 — Evaluation
 
 - [ ] **16. Test cases CSV.** Write `eval/test_cases.csv` with columns
-  `description`, `location` (required), `behaviours` (can be blank; both
-  joined into the description the same way the form does it), `expected_outcome`
-  (confident / possible / not_enough), and `expected_species` (scientific
-  name; for look-alikes, the species it really was). You decide the expected
+  `description` and `location` (required), one optional column per
+  "Additional specifics" box (`size_shape`, `wing_type`, `colour_patterns`,
+  `beak_type`, `foot_type`, `behaviours`; all joined into one text the same
+  way the form does it), `expected_outcome` (confident / possible /
+  not_enough), `expected_species` (scientific name; for look-alikes, the
+  species it really was), and `source` (where the row's information comes
+  from). The owner writes this file from their own records. You decide the expected
   outcome for each row, using your birding knowledge. Include:
   - clear descriptions of distinctive birds,
   - look-alike pairs,
@@ -147,8 +150,10 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   Species are matched by scientific name. The script also prints summary
   scores: % correct overall, number of **Wrong** + **Guessed** (the worst
   errors — confidently misleading the user), number of names that failed the
-  name check, and a small expected-vs-actual outcome table. It refuses to run
-  in demo mode.
+  name check, accuracy per expected outcome (with a ± margin of error), and a
+  small expected-vs-actual outcome table. It uses free demo answers unless
+  run with `--real` (one paid API call per row; ask the owner first). Each
+  run saves `eval/results_<demo|real>_<date-time>.csv`, so runs can be compared.
   *Test:* run it on 3 rows first, check the verdicts by hand, then run all.
 
 - [ ] **18. Improve accuracy.** Run the evaluation once before any change and
