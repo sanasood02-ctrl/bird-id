@@ -151,9 +151,28 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   in demo mode.
   *Test:* run it on 3 rows first, check the verdicts by hand, then run all.
 
-- [ ] **18. Review results.** Look at the mistakes and the detail ladders,
-  adjust the prompt or the "enough information" rule if needed, re-run, and
-  write down what changed and how the scores moved for your report.
+- [ ] **18. Improve accuracy.** Run the evaluation once before any change and
+  save those scores as the starting point. Then make one change at a time,
+  re-run the evaluation after each one, and write down what changed and how
+  the scores moved, for your report. Pay most attention to **Wrong** and
+  **Guessed**.
+
+  - [ ] **18a. Better clues from users.** Add short tips under the
+    "Additional specifics" boxes, taken from your field notes (e.g. compare
+    the size to a bird you know). You approve the wording.
+    *Test:* the tips show under the right boxes on the Identify page.
+
+  - [ ] **18b. Context engineering.** Give Haiku better material in its
+    instructions: 2–3 worked examples with the correct reasoning (including a
+    cautious one, like Downy vs Hairy Woodpecker), your `fieldnotes.md` as a
+    reference (passed along exactly as written), and a short list of
+    easily-confused bird groups that you write.
+    *Test:* re-run the evaluation and compare the scores with the starting point.
+
+  - [ ] **18c. Sharpen the instructions.** Look at the remaining mistakes and
+    the detail ladders, look for patterns, and adjust the prompt or the
+    "enough information" rule to fix them.
+    *Test:* re-run the evaluation and compare the scores with the previous run.
 
 ## Phase 7 — Finish
 
