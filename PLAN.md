@@ -133,7 +133,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
     to find where the app switches from "not enough data" to an answer.
   *Test:* the file opens correctly in a spreadsheet app.
 
-- [ ] **17. Evaluation script and scoring.** `eval/run_eval.py` runs every row
+- [x] **17. Evaluation script and scoring.** `eval/run_eval.py` runs every row
   through `identify_bird()` and saves a results table with one verdict per row:
 
   | Expected | App said | Verdict |
