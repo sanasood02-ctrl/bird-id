@@ -7,7 +7,7 @@ import streamlit as st
 # which folder Streamlit was started from.
 FIELDNOTES_FILE = Path(__file__).parent.parent / "fieldnotes.md"
 
-st.title("Fieldnotes tutorial")
+st.title("Field Notes Tutorial")
 
 if FIELDNOTES_FILE.exists():
     # Show the owner's notes exactly as written (no AI, no changes).
