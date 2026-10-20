@@ -117,7 +117,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 ## Phase 6 — Evaluation
 
-- [ ] **16. Test cases CSV.** Write `eval/test_cases.csv` with columns
+- [x] **16. Test cases CSV.** Write `eval/test_cases.csv` with columns
   `description` and `location` (required), one optional column per
   "Additional specifics" box (`size_shape`, `wing_type`, `colour_patterns`,
   `beak_type`, `foot_type`, `behaviours`; all joined into one text the same
