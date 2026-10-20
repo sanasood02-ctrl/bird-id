@@ -163,3 +163,10 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 - [ ] **20. Final commit and push.**
   *Test:* GitHub has the latest code and still no secrets file.
+
+- [ ] **21. Deploy online.** Put the app on Streamlit Community Cloud, straight
+  from the GitHub repo. The API key goes into the app's Secrets settings on
+  the Streamlit Cloud website (never into the repo). Use the app's Sharing
+  settings to limit who can open it, so strangers can't spend your credit.
+  *Test:* open the app's web address in a browser where you're not logged in
+  and check it's blocked; then open it while logged in and identify a bird.
