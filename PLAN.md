@@ -162,7 +162,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   the scores moved, for your report. Pay most attention to **Wrong** and
   **Guessed**.
 
-  - [ ] **18a. Better clues from users.** Add short tips under the
+  - [x] **18a. Better clues from users.** Add short tips under the
     "Additional specifics" boxes, taken from your field notes (e.g. compare
     the size to a bird you know). You approve the wording.
     *Test:* the tips show under the right boxes on the Identify page.

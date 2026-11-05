@@ -156,22 +156,53 @@ with left:
         placeholder="e.g. Lodhi Garden, Delhi, winter morning",
     )
 
-    st.subheader("Additional specifics")
+    # help="..." adds a small "?" icon; the tip (from fieldnotes.md) shows on hover.
+    st.subheader(
+        "Additional specifics",
+        help="You don't need all of these. Even two or three solid field marks are often enough.",
+    )
 
     # key="specifics" lets style.css find these boxes to resize their labels.
     with st.container(key="specifics"):
         # Two columns of three boxes each, under the description box.
         specifics_left, specifics_right = st.columns(2)
         with specifics_left:
-            size_and_shape = st.text_input("Size and shape", placeholder="e.g. smaller than a pigeon, stout body")
-            wing_type = st.text_input("Wing type", placeholder="e.g. long and pointed, short and rounded")
-            colour_patterns = st.text_input("Colour patterns", placeholder="e.g. brown back, streaky chest, white eye ring")
+            size_and_shape = st.text_input(
+                "Size and shape",
+                placeholder="e.g. smaller than a pigeon, stout body",
+                help="Compare it to a bird you know (sparrow, pigeon, crow), "
+                "and note its proportions, like a long neck or stout body.",
+            )
+            wing_type = st.text_input(
+                "Wing type",
+                placeholder="e.g. long and pointed, short and rounded",
+                help="If it flew: wing shape (broad, pointed or rounded) and "
+                "flight style (soaring, flapping, swooping or hovering).",
+            )
+            colour_patterns = st.text_input(
+                "Colour patterns",
+                placeholder="e.g. brown back, streaky chest, white eye ring",
+                help="Main colours plus markings like eye rings, stripes, crests, "
+                "and wing or tail marks. Note the beak and feet colour too.",
+            )
         with specifics_right:
-            beak_type = st.text_input("Beak type", placeholder="e.g. short and conical, hooked")
-            foot_type = st.text_input("Foot type", placeholder="e.g. webbed, strong talons")
+            beak_type = st.text_input(
+                "Beak type",
+                placeholder="e.g. short and conical, hooked",
+                help="Shape and length: thin and pointed, short and conical, "
+                "hooked, flat and broad, or long and thin.",
+            )
+            foot_type = st.text_input(
+                "Foot type",
+                placeholder="e.g. webbed, strong talons",
+                help="Webbed, long thin toes, strong curved talons, or perching "
+                "feet (three toes forward, one back).",
+            )
             behaviours = st.text_input(
                 "Behaviours",
                 placeholder="e.g. hopping on the ground, tail-bobbing, sharp chip-chip call",
+                help="Tail-bobbing, hopping or walking, perching low or high, habitat, "
+                'and calls (a rough guess like "chip-chip" is fine).',
             )
 
 # A dictionary pairs each label with what the user typed in that box.
