@@ -42,7 +42,7 @@ plain-language description.
 - **"Enough information" rule (given to Haiku in its instructions):**
   Confident = the description rules out all similar species (taking location
   into account); Possible matches = 2–3 species remain; Not enough data = more
-  than 3 remain. When unsure between two outcomes, pick the more cautious one.
+  than 3 remain. When unsure between Confident and Possible, pick Possible.
   The distinguishing-trait tip is AI-written, so label it "AI suggestion".
 - A **Fieldnotes tutorial** page shows the owner's own birdwatching class notes
   (the Markdown file `fieldnotes.md`) **exactly as written**. Do not rewrite, summarize, or

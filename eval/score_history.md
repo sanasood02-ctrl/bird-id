@@ -10,6 +10,7 @@ Guessed: the app confidently misleading the user.
 | 3 | 2026-11-09 | Step 18b: three worked examples and the field notes added to Haiku's instructions | 81% ± 8% | 46 of 50 | 10 of 25 | 25 of 25 | 4 | `results_real_2026-11-09_0120.csv` |
 | 4 | 2026-11-09 | Step 18c: two new rules for choosing "possible" | 81% ± 8% | 45 of 50 | 11 of 25 | 25 of 25 | 4 | `results_real_2026-11-09_0129.csv` |
 | 5 | 2026-11-09 | Switched from Claude Haiku 4.5 to Claude Haiku 5.5 | 76% ± 8% | 38 of 50 | 13 of 25 | 25 of 25 | 3 | `results_real_2026-11-09_0208.csv` |
+| 6 | 2026-11-09 | Adjusted the instructions for Haiku 5.5's caution | 79 of 100 right (81% ± 8% of the 98 rows that got an answer) | 43 of 49 | 11 of 24 | 25 of 25 | 1 | `results_real_2026-11-09_0218.csv` |
 
 ## Notes on each change
 
@@ -77,3 +78,21 @@ Guessed: the app confidently misleading the user.
   a friendly error instead. The check was added after this run.
 - This model does not accept the temperature setting, so the same description
   can get different answers on different runs.
+
+### Run 6: instructions adjusted for Haiku 5.5
+
+- Four changes made together: a sentence requiring species to be listed;
+  removing "not_enough over possible"; removing the first Step 18c rule; and a
+  new rule to count only realistic look-alikes for the location and season.
+- 79 of 100 rows were right, up from 76 in run 5. The script reports 81%
+  because it leaves out the 2 rows that got an error instead of an answer.
+  Counting those as misses, 79% is the fair comparison with earlier runs.
+- Worst errors fell to 1, the lowest of all runs. Row 11 (Common Myna) was
+  answered as Yellow-wattled Lapwing, and that row is handed the Red-wattled
+  Lapwing field record, so RAG may have pulled it towards a lapwing.
+- Empty species lists stopped appearing as Wrong, but 2 rows (5 and 65) hit the
+  friendly error message. The same message covers several causes, so these may
+  or may not be empty lists.
+- Confident rows improved. "Too cautious" on confident rows fell from 9 to 5.
+- The "possible" rows did not improve: 13 of them were answered "not enough
+  data" (11 in run 5). This is the largest remaining problem.
