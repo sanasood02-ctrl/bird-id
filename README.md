@@ -59,7 +59,22 @@ The 100 test descriptions are in `eval/test_cases.csv`. Each run saves a results
 table in `eval/`, and `eval/score_history.md` records how the scores changed
 with each change to the app.
 
+## Results
+
+On the final run, the app was right on 79 of the 100 test descriptions, with a
+margin of error of about ±8 points. It started at 83 of 100, so overall accuracy
+did not measurably change. The number of answers that named the wrong bird fell from 7 to 1, but
+overly cautious answers rose from 6 to 18. It correctly declined all 25
+descriptions that had too little detail.
+
+The instructions were tuned on these same 100 rows, so the score may be
+optimistic for new descriptions. The full results and limits are in
+`report/report_materials.md`.
+
 ## Using the skill in Claude Code
 
-The same instructions work as a Claude Code skill. Start Claude Code in this
-folder and type `/identify-bird` followed by a description and location.
+The same instructions work as a Claude Code skill. They are in
+`.claude/skills/identify-bird/SKILL.md`. Start Claude Code in this folder and
+type `/identify-bird` followed by a description and location. The skill has the
+identification rules only: the field notes, field records, name check and
+Wikipedia lookup are added by the app.
