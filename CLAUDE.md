@@ -50,8 +50,10 @@ plain-language description.
 - An **evaluation script** runs test descriptions from a CSV through the
   identification function and produces a results table (expected vs. actual)
   with a verdict per row and summary scores (see Step 17 in `PLAN.md`).
-- **Later, only if time allows:** a RAG layer over ~30 species from the owner's
-  own records. Do not start this unless asked.
+- A small **RAG layer** (`rag.py`) over seven species from the owner's own
+  records (`data/field_records.txt`, kept exactly as written). It is a sample
+  of how RAG works: records are matched by shared words, and the best matches
+  are handed to Haiku along with the description.
 
 The build plan and progress checklist live in `PLAN.md`. Tick off steps there as
 they are finished and tested.

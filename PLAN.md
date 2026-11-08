@@ -167,11 +167,23 @@ activate the virtual environment with `source .venv/bin/activate`, then run
     the size to a bird you know). You approve the wording.
     *Test:* the tips show under the right boxes on the Identify page.
 
+  - [x] **RAG sample.** Save your seven species records in
+    `data/field_records.txt`. `rag.py` finds the records that share the most
+    words with the description and hands the best two to Haiku. The page shows
+    which records were used.
+    *Test:* describe a Red-vented Bulbul; the "Checked using RAG against field
+    records" line appears. Re-run the evaluation and compare with the starting
+    point.
+
+  - [ ] **Skill file.** Move Haiku's instructions, word for word, into
+    `.claude/skills/identify-bird/SKILL.md`. The app reads them from there.
+    *Test:* the instructions the app loads match the old text exactly; a demo
+    identification still works.
+
   - [ ] **18b. Context engineering.** Give Haiku better material in its
     instructions: 2–3 worked examples with the correct reasoning (including a
-    cautious one, like Downy vs Hairy Woodpecker), your `fieldnotes.md` as a
-    reference (passed along exactly as written), and a short list of
-    easily-confused bird groups that you write.
+    cautious one, like Downy vs Hairy Woodpecker) and your `fieldnotes.md` as a
+    reference (passed along exactly as written).
     *Test:* re-run the evaluation and compare the scores with the starting point.
 
   - [ ] **18c. Sharpen the instructions.** Look at the remaining mistakes and

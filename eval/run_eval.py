@@ -151,6 +151,7 @@ def evaluate_row(row, api_key):
         "app_species": "",
         "name_check": "",
         "verdict": "",
+        "records_used": "",
         "reasoning": "",
     }
 
@@ -178,6 +179,7 @@ def evaluate_row(row, api_key):
     result_row["app_species"] = "; ".join(shown_names)
     result_row["name_check"] = "; ".join(statuses)
     result_row["reasoning"] = result["reasoning"]
+    result_row["records_used"] = "; ".join(result["records_used"])
     result_row["verdict"] = get_verdict(expected_outcome, expected_species,
                                         result["outcome"], app_species_names)
     return result_row
@@ -232,6 +234,13 @@ def print_summary(results):
         if rows:
             right = sum(1 for row in rows if row["verdict"] in RIGHT_VERDICTS)
             print(f"  {outcome:<12}{right / len(rows):.0%}  ({right} of {len(rows)})")
+
+    # RAG only affects rows that matched a field record, so score those separately.
+    rag_rows = [row for row in scored if row["records_used"] != ""]
+    if rag_rows:
+        right = sum(1 for row in rag_rows if row["verdict"] in RIGHT_VERDICTS)
+        print()
+        print(f"Rows given a field record: {len(rag_rows)}  ({right / len(rag_rows):.0%} right)")
 
     # Each line is one expected outcome; each column counts what the app said.
     print()

@@ -253,3 +253,7 @@ with right:
                         show_possible(result)
                     else:
                         show_not_enough()
+
+                    # Shows the RAG step at work: which of the owner's records were used.
+                    if result["records_used"]:
+                        st.caption("Checked using RAG against field records: " + ", ".join(result["records_used"]))

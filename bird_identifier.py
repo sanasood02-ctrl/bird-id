@@ -5,6 +5,8 @@ import json
 
 import anthropic
 
+from rag import find_matching_records
+
 MODEL = "claude-haiku-4-5"
 
 # Haiku's instructions (the "system prompt"). It follows these for every request.
@@ -27,6 +29,12 @@ When you are unsure between two outcomes, pick the more cautious one \
 Only rule out a species using details the user actually wrote. Never add details \
 they did not mention. A vague size word on its own ("small", "big") does not rule \
 out a look-alike; a size compared to a known bird ("smaller than a robin") can.
+
+A message may end with field records written by the app's owner. They cover only \
+seven species and were picked by shared words, so a record may be about a different \
+bird from the one described. Use a record only as facts about that record's species. \
+Never choose a species because it has a record, and still follow every rule above. \
+A record's location list may be incomplete, so it cannot rule a species out by location.
 
 For each species give its common English name and its scientific name. The \
 scientific name must be the species name in the form "Genus species" (two words), \
@@ -103,13 +111,31 @@ def identify_bird(description, api_key=None):
                  empty for not_enough). Each species has a common_name,
                  scientific_name, and distinguishing_trait (only used for
                  possible matches; empty otherwise).
+      "records_used": names of the owner's field records that matched the
+                      description (see rag.py); empty if none did.
 
     With an API key, asks Claude Haiku. Without one, returns a demo result.
     Raises IdentificationError (with a friendly message) if Haiku can't be asked.
     """
+    records = find_matching_records(description)
     if api_key is None:
-        return demo_identify(description)
-    return ask_haiku(description, api_key)
+        result = demo_identify(description)
+    else:
+        result = ask_haiku(description, api_key, records)
+
+    # Added here rather than by Haiku, so real and demo results match exactly.
+    result["records_used"] = [record["name"] for record in records]
+    return result
+
+
+def add_records_to_message(description, records):
+    """Return the text to send Haiku: the description, then any matching records."""
+    if not records:
+        return description
+    message = description + "\n\nField records from the app's owner:"
+    for record in records:
+        message = message + "\n\n" + record["text"]
+    return message
 
 
 class IdentificationError(Exception):
@@ -118,8 +144,9 @@ class IdentificationError(Exception):
     friendly sentence that can be shown to the user as it is."""
 
 
-def ask_haiku(description, api_key):
+def ask_haiku(description, api_key, records):
     """Ask Claude Haiku to identify the bird, and return its answer as a dictionary.
+    records is the list of field records to include with the description.
 
     Raises IdentificationError with a friendly message if anything goes wrong.
     """
@@ -129,7 +156,7 @@ def ask_haiku(description, api_key):
             model=MODEL,
             max_tokens=2048,
             system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": description}],
+            messages=[{"role": "user", "content": add_records_to_message(description, records)}],
             # Structured outputs: the reply must be JSON matching RESULT_SCHEMA.
             output_config={"format": {"type": "json_schema", "schema": RESULT_SCHEMA}},
             # temperature 0 = the same description gets the same answer every time,
