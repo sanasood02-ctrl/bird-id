@@ -9,6 +9,7 @@ Guessed: the app confidently misleading the user.
 | 2 | 2026-11-09 | Added RAG (seven species, word matching, best two records) | 77% ± 8% | 46 of 50 | 6 of 25 | 25 of 25 | 6 | `results_real_2026-11-09_0058.csv` |
 | 3 | 2026-11-09 | Step 18b: three worked examples and the field notes added to Haiku's instructions | 81% ± 8% | 46 of 50 | 10 of 25 | 25 of 25 | 4 | `results_real_2026-11-09_0120.csv` |
 | 4 | 2026-11-09 | Step 18c: two new rules for choosing "possible" | 81% ± 8% | 45 of 50 | 11 of 25 | 25 of 25 | 4 | `results_real_2026-11-09_0129.csv` |
+| 5 | 2026-11-09 | Switched from Claude Haiku 4.5 to Claude Haiku 5.5 | 76% ± 8% | 38 of 50 | 13 of 25 | 25 of 25 | 3 | `results_real_2026-11-09_0208.csv` |
 
 ## Notes on each change
 
@@ -62,3 +63,17 @@ Guessed: the app confidently misleading the user.
   right, wrong, right, wrong across the four runs. Row 26 (Australian Magpie)
   was right, wrong, wrong, right. Differences of a few points between runs
   should not be over-read.
+
+### Run 5: Claude Haiku 5.5
+
+- Accuracy fell by 5 points from run 4, but the margins of error overlap.
+- The new model is much more cautious. "Too cautious" rose from 8 rows to 20,
+  and "Lucky (overconfident)" fell from 7 rows to 1.
+- No row named a wrong bird. All 3 Wrong verdicts (rows 14, 23, 29) were
+  "confident" answers with an empty species list. In each one, the written
+  reasoning had picked the right bird. If those 3 had named it, the score
+  would have been 79%.
+- The app would have crashed on an empty list, so a check was added that shows
+  a friendly error instead. The check was added after this run.
+- This model does not accept the temperature setting, so the same description
+  can get different answers on different runs.

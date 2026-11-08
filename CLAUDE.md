@@ -16,7 +16,7 @@ plain-language description.
   joins every filled-in box into one labeled text (e.g. "Description: ...",
   "Location: ...", "Beak type: ...") and passes that single text to the
   identification function.
-- The app asks Claude Haiku 4.5 to identify the species and returns one of
+- The app asks Claude Haiku 5.5 to identify the species and returns one of
   three outcomes:
   - **Confident** — one species: common name, scientific name, Wikipedia photo, fun fact.
   - **Possible matches** — up to 3 species, each with name and photo, under a
@@ -64,7 +64,7 @@ they are finished and tested.
 
 - Python 3.11, in a virtual environment (`.venv/`)
 - Streamlit for the UI (multi-page app)
-- `anthropic` Python SDK, model `claude-haiku-4-5`, using structured outputs
+- `anthropic` Python SDK, model `claude-haiku-5-5`, using structured outputs
   so the response always matches a fixed shape
 - `requests` for the Wikipedia API (send a descriptive `User-Agent` header —
   Wikipedia requires one)

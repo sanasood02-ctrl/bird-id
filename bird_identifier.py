@@ -8,7 +8,7 @@ import anthropic
 
 from rag import find_matching_records
 
-MODEL = "claude-haiku-4-5"
+MODEL = "claude-haiku-5-5"
 
 # Haiku's instructions (the "system prompt") live in this skill file, so the
 # same rules can also be used as a Claude Code skill.
@@ -141,15 +141,17 @@ def ask_haiku(description, api_key, records):
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=2048,
+            # Haiku thinks before it answers, and that thinking counts towards
+            # this limit, so it needs plenty of room.
+            max_tokens=16000,
             system=SYSTEM_PROMPT,
             messages=[{"role": "user", "content": add_records_to_message(description, records)}],
             # Structured outputs: the reply must be JSON matching RESULT_SCHEMA.
-            output_config={"format": {"type": "json_schema", "schema": RESULT_SCHEMA}},
-            # temperature 0 = the same description gets the same answer every time,
-            # which keeps the evaluation fair. (This SDK version no longer lists
-            # temperature as a setting, so it is passed through extra_body.)
-            extra_body={"temperature": 0},
+            # "effort" sets how much Haiku thinks before answering.
+            output_config={
+                "format": {"type": "json_schema", "schema": RESULT_SCHEMA},
+                "effort": "medium",
+            },
         )
     # Each "except" catches one kind of failure and swaps the technical error
     # for a friendly message. The first matching one is used.
@@ -192,6 +194,11 @@ def ask_haiku(description, api_key, records):
 
     # The schema can't limit the list to 3 species, so do it here.
     result["species"] = result["species"][:3]
+
+    # The schema can't require species for an answer either, and the page
+    # needs at least one to show.
+    if result["outcome"] != "not_enough" and not result["species"]:
+        raise IdentificationError("Something went wrong reading the result. Please try again.")
     return result
 
 
