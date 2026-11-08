@@ -54,6 +54,8 @@ plain-language description.
   records (`data/field_records.txt`, kept exactly as written). It is a sample
   of how RAG works: records are matched by shared words, and the best matches
   are handed to Haiku along with the description.
+- Haiku's instructions live in `.claude/skills/identify-bird/SKILL.md`. The app
+  reads them from that file, and it also works as a Claude Code skill.
 
 The build plan and progress checklist live in `PLAN.md`. Tick off steps there as
 they are finished and tested.

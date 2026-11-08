@@ -175,7 +175,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
     records" line appears. Re-run the evaluation and compare with the starting
     point.
 
-  - [ ] **Skill file.** Move Haiku's instructions, word for word, into
+  - [x] **Skill file.** Move Haiku's instructions, word for word, into
     `.claude/skills/identify-bird/SKILL.md`. The app reads them from there.
     *Test:* the instructions the app loads match the old text exactly; a demo
     identification still works.

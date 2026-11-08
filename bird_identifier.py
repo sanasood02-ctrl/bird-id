@@ -2,6 +2,7 @@
 so the evaluation script can use these functions directly."""
 
 import json
+from pathlib import Path
 
 import anthropic
 
@@ -9,39 +10,22 @@ from rag import find_matching_records
 
 MODEL = "claude-haiku-4-5"
 
-# Haiku's instructions (the "system prompt"). It follows these for every request.
-SYSTEM_PROMPT = """You are a careful bird-identification assistant. The user describes a \
-bird they saw in plain language, sometimes with labeled details such as size and \
-shape, wing type, colour patterns, beak type, foot type, and behaviours. The \
-location where they saw it is always given.
+# Haiku's instructions (the "system prompt") live in this skill file, so the
+# same rules can also be used as a Claude Code skill.
+SKILL_FILE = Path(__file__).parent / ".claude" / "skills" / "identify-bird" / "SKILL.md"
 
-Never guess. First, in "reasoning", list the species the description could fit. \
-For each look-alike, say whether a detail in the description rules it out, and name \
-that detail. Only then choose one outcome, based on how many species remain:
-- "confident": the description rules out all similar species (taking location and \
-season into account). Return exactly 1 species.
-- "possible": 2 or 3 species remain. Return them, and for each one give the \
-distinguishing trait: the field mark that would tell it apart from the others.
-- "not_enough": more than 3 species remain. Return an empty species list.
-When you are unsure between two outcomes, pick the more cautious one \
-("possible" over "confident", "not_enough" over "possible").
 
-Only rule out a species using details the user actually wrote. Never add details \
-they did not mention. A vague size word on its own ("small", "big") does not rule \
-out a look-alike; a size compared to a known bird ("smaller than a robin") can.
+def load_system_prompt():
+    """Return Haiku's instructions: the skill file without its settings block."""
+    file_text = SKILL_FILE.read_text(encoding="utf-8")
+    # The file starts with settings between two "---" lines, so splitting at
+    # the first two "---" leaves the instructions in the last piece.
+    instructions = file_text.split("---", 2)[2]
+    return instructions.strip()
 
-A message may end with field records written by the app's owner. They cover only \
-seven species and were picked by shared words, so a record may be about a different \
-bird from the one described. Use a record only as facts about that record's species. \
-Never choose a species because it has a record, and still follow every rule above. \
-A record's location list may be incomplete, so it cannot rule a species out by location.
 
-For each species give its common English name and its scientific name. The \
-scientific name must be the species name in the form "Genus species" (two words), \
-never a family, order or genus name on its own. Use AviList v2025 names; every name \
-is checked against the AviList global bird checklist. For a "confident" result, \
-leave distinguishing_trait as an empty string. Do not write fun facts or any other \
-extra information."""
+# Haiku follows these instructions for every request.
+SYSTEM_PROMPT = load_system_prompt()
 
 # The fixed shape every answer must have (a JSON schema). It matches the demo
 # results exactly, so the rest of the app works the same in both modes.
