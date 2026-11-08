@@ -13,15 +13,18 @@ MODEL = "claude-haiku-4-5"
 # Haiku's instructions (the "system prompt") live in this skill file, so the
 # same rules can also be used as a Claude Code skill.
 SKILL_FILE = Path(__file__).parent / ".claude" / "skills" / "identify-bird" / "SKILL.md"
+FIELDNOTES_FILE = Path(__file__).parent / "fieldnotes.md"
 
 
 def load_system_prompt():
-    """Return Haiku's instructions: the skill file without its settings block."""
+    """Return Haiku's instructions: the skill file without its settings block,
+    followed by the owner's field notes, exactly as written."""
     file_text = SKILL_FILE.read_text(encoding="utf-8")
     # The file starts with settings between two "---" lines, so splitting at
     # the first two "---" leaves the instructions in the last piece.
-    instructions = file_text.split("---", 2)[2]
-    return instructions.strip()
+    instructions = file_text.split("---", 2)[2].strip()
+    field_notes = FIELDNOTES_FILE.read_text(encoding="utf-8")
+    return instructions + "\n\nThe owner's birdwatching field notes, for reference:\n\n" + field_notes
 
 
 # Haiku follows these instructions for every request.

@@ -180,7 +180,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
     *Test:* the instructions the app loads match the old text exactly; a demo
     identification still works.
 
-  - [ ] **18b. Context engineering.** Give Haiku better material in its
+  - [x] **18b. Context engineering.** Give Haiku better material in its
     instructions: 2–3 worked examples with the correct reasoning (including a
     cautious one, like Downy vs Hairy Woodpecker) and your `fieldnotes.md` as a
     reference (passed along exactly as written).
