@@ -156,7 +156,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
   run saves `eval/results_<demo|real>_<date-time>.csv`, so runs can be compared.
   *Test:* run it on 3 rows first, check the verdicts by hand, then run all.
 
-- [ ] **18. Improve accuracy.** Run the evaluation once before any change and
+- [x] **18. Improve accuracy.** Run the evaluation once before any change and
   save those scores as the starting point. Then make one change at a time,
   re-run the evaluation after each one, and write down what changed and how
   the scores moved, for your report. Pay most attention to **Wrong** and
@@ -193,11 +193,11 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 
 ## Phase 7 — Finish
 
-- [ ] **19. Tidy up.** Write a short `README.md` (what the app does, how to run
+- [x] **19. Tidy up.** Write a short `README.md` (what the app does, how to run
   it, how to add your own key). Remove leftover test code.
   *Test:* follow your own README from a fresh Terminal window and the app runs.
 
-- [ ] **20. Final commit and push.**
+- [x] **20. Final commit and push.**
   *Test:* GitHub has the latest code and still no secrets file.
 
 - [ ] **21. Deploy online.** Put the app on Streamlit Community Cloud, straight
