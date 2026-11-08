@@ -8,6 +8,7 @@ Guessed: the app confidently misleading the user.
 | 1 | 2026-10-20 | Starting point | 83% ± 7% | 47 of 50 | 11 of 25 | 25 of 25 | 7 | `results_real_2026-10-20_2014.csv` |
 | 2 | 2026-11-09 | Added RAG (seven species, word matching, best two records) | 77% ± 8% | 46 of 50 | 6 of 25 | 25 of 25 | 6 | `results_real_2026-11-09_0058.csv` |
 | 3 | 2026-11-09 | Step 18b: three worked examples and the field notes added to Haiku's instructions | 81% ± 8% | 46 of 50 | 10 of 25 | 25 of 25 | 4 | `results_real_2026-11-09_0120.csv` |
+| 4 | 2026-11-09 | Step 18c: two new rules for choosing "possible" | 81% ± 8% | 45 of 50 | 11 of 25 | 25 of 25 | 4 | `results_real_2026-11-09_0129.csv` |
 
 ## Notes on each change
 
@@ -47,3 +48,17 @@ Guessed: the app confidently misleading the user.
 - Row 41 (Kakapo) became right again. Row 26 (Australian Magpie) stayed Wrong.
   Row 17 (Spoon-billed Sandpiper) went back to Wrong, this time as Black
   Spoonbill.
+
+### Run 4: Step 18c (two new rules for "possible")
+
+- The two rules: answer "possible" if a look-alike has not been ruled out by
+  something the user wrote, and use "not enough data" only when more than 3
+  species remain.
+- Accuracy did not change. 8 rows changed verdict: 4 got better (26, 52, 53,
+  54) and 4 got worse (8, 41, 67, 68), which cancelled out.
+- On "possible" rows, the app said "confident" 7 times (8 in run 3) and "not
+  enough data" 6 times (6 in run 3). The rules barely moved either problem.
+- Some rows flip between runs after small wording changes. Row 41 (Kakapo) was
+  right, wrong, right, wrong across the four runs. Row 26 (Australian Magpie)
+  was right, wrong, wrong, right. Differences of a few points between runs
+  should not be over-read.

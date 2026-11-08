@@ -186,7 +186,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
     reference (passed along exactly as written).
     *Test:* re-run the evaluation and compare the scores with the starting point.
 
-  - [ ] **18c. Sharpen the instructions.** Look at the remaining mistakes and
+  - [x] **18c. Sharpen the instructions.** Look at the remaining mistakes and
     the detail ladders, look for patterns, and adjust the prompt or the
     "enough information" rule to fix them.
     *Test:* re-run the evaluation and compare the scores with the previous run.
