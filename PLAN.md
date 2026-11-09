@@ -200,7 +200,7 @@ activate the virtual environment with `source .venv/bin/activate`, then run
 - [x] **20. Final commit and push.**
   *Test:* GitHub has the latest code and still no secrets file.
 
-- [ ] **21. Deploy online.** Put the app on Streamlit Community Cloud, straight
+- [x] **21. Deploy online.** Put the app on Streamlit Community Cloud, straight
   from the GitHub repo. The API key goes into the app's Secrets settings on
   the Streamlit Cloud website (never into the repo). Use the app's Sharing
   settings to limit who can open it, so strangers can't spend your credit.
